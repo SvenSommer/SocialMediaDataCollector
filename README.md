@@ -7,4 +7,4 @@ Data following data is collected.
 * dailySubscribers (date: Date, subscribers: Number)
 * rank             (date: Date, rank: Number)
     
-Data is available for Downlaod as csv-file or JSON-file.
+Data is available for Downlaod as csv or JSON-file.
