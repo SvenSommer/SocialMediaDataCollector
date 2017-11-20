@@ -1,0 +1,16 @@
+<% include ../partials/header %>
+<h1>Welcome!</h1>
+<% subreddits.forEach(function(subreddit){ %>
+    <div class="ui text container segment">
+        <h2><%= subreddit.title%></h2>
+        <a href="<%= subreddit.url%>"><%= subreddit.url%></a>
+        <p>Subscriber Growth Entries: <%=  Object.keys(subreddit.subscriberGrowth).length%></p>
+        <p>Total Subscriber Entries: <%=  Object.keys(subreddit.totalSubscribers).length%></p>
+        <p>Rank Entries: <%=  Object.keys(subreddit.rank).length%></p>
+        <p>created: <%=moment(subreddit.created).format('DD. MMM YYYY')%></p>
+        <a class="ui primary button" href="/subreddits/<%=subreddit._id%>/refresh">Update</a>
+        <a class="ui primary button" href="/subreddits/<%=subreddit._id%>/download">Downlaod</a>
+    </div>
+<% })%>
+
+<% include ../partials/footer %>
