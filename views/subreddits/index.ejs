@@ -8,8 +8,12 @@
         <p>Total Subscriber Entries: <%=  Object.keys(subreddit.totalSubscribers).length%></p>
         <p>Rank Entries: <%=  Object.keys(subreddit.rank).length%></p>
         <p>created: <%=moment(subreddit.created).format('DD. MMM YYYY')%></p>
-        <a class="ui primary button" href="/subreddits/<%=subreddit._id%>/refresh">Update</a>
-        <a class="ui primary button" href="/subreddits/<%=subreddit._id%>/download">Downlaod</a>
+
+        <div class="ui buttons">
+            <a class="ui primary button" href="/subreddits/<%=subreddit._id%>/refresh"><i class="refresh icon"></i></a>
+             <div class="or"></div>
+            <a class="ui positive button" href="/subreddits/<%=subreddit._id%>/download"><i class="download icon"></i></a>
+        </div>
     </div>
 <% })%>
 
