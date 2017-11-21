@@ -69,7 +69,7 @@ router.get("/:id/download", function(req, res) {
 });
 
 function buildFile(subreddit){
-    var startDate =  new Date(2012, 0, 1);
+    var startDate =  new Date(2017, 0, 1);
     var endDate =  new Date();
     var resultMatrix = [];
 
