@@ -55,7 +55,7 @@ router.get("/:id/download", function(req, res) {
         } else {
             
             var filecontent = buildFile(foundSubreddit);
-            var file = foundSubreddit.title.replace("/r/","").replace("(","").replace(")","").replace(" ","") +  "_redditData.txt";
+            var file = "redditData.txt";
             var filepath = path.resolve(".")+'/files/'+file;
             fs.writeFile(filepath, filecontent, function(err) {
                 if(err) {
