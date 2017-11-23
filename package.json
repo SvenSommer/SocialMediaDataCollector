@@ -27,6 +27,7 @@
     "crawler": "^1.1.1",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "helmet": "^3.9.0",
     "method-override": "^2.3.10",
     "moment": "^2.19.2",
     "mongoose": "^4.13.4"

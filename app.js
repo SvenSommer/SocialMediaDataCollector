@@ -3,10 +3,13 @@ var express             = require("express"),
     methodOverride      = require("method-override"),
     bodyParser          = require("body-parser"),
     mongoose            = require("mongoose"),
-    moment              = require('moment');
+    moment              = require('moment'),
+    helmet = require('helmet');
+
     
 // killall mongod ; cd ; ./mongod --repair ; cd data ; rm -rf mongod.lock ; cd ; ./mongod
 
+app.use(helmet());
 app.set("view engine","ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));

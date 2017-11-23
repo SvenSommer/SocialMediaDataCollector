@@ -53,9 +53,15 @@ router.get("/:id/download_csv", function(req, res) {
           if(err){
             console.log(err);
         } else {
-            writeFile2Download("Subreddit_" + foundSubreddit.title.split(" ")[0].replace("/r/","") + "_SubscriberData.csv",
-            buildFileCSV(mergeData(foundSubreddit)), 
-            res);
+            console.log("DOWNLOAD_ENABLED:" + process.env.DOWNLOAD_ENABLED);
+            if (process.env.DOWNLOAD_ENABLED == "true") {
+                writeFile2Download("Subreddit_" + foundSubreddit.title.split(" ")[0].replace("/r/","") + "_SubscriberData.csv",
+                buildFileCSV(mergeData(foundSubreddit)), 
+                res);
+            } else {
+                var filetext = buildFileCSV(mergeData(foundSubreddit));
+                res.render("subreddits/download", {filetext: filetext});
+           }
         }
     });
 });
@@ -65,9 +71,15 @@ router.get("/:id/download_json", function(req, res) {
           if(err){
             console.log(err);
         } else {
-            writeFile2Download("Subreddit_" + foundSubreddit.title.split(" ")[0].replace("/r/","") + "_SubscriberData.json",
-            buildFileJSON(mergeData(foundSubreddit)), 
-            res);
+            console.log("DOWNLOAD_ENABLED:" + process.env.DOWNLOAD_ENABLED);
+           if (process.env.DOWNLOAD_ENABLED == "true") {
+                writeFile2Download("Subreddit_" + foundSubreddit.title.split(" ")[0].replace("/r/","") + "_SubscriberData.json",
+                buildFileJSON(mergeData(foundSubreddit)), 
+                res);
+           } else {
+                var filetext = buildFileJSON(mergeData(foundSubreddit));
+                res.render("subreddits/download", {filetext: filetext});
+           }
         }
     });
 });
