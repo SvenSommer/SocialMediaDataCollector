@@ -47,79 +47,120 @@ router.get("/:id/refresh", function(req, res) {
     
 });
 
-//DOWNLOAD - Download data
-router.get("/:id/download", function(req, res) {
+//DOWNLOAD - Download data csv
+router.get("/:id/download_csv", function(req, res) {
     Subreddit.findById(req.params.id, function(err, foundSubreddit){
           if(err){
             console.log(err);
         } else {
-            
-            var filecontent = buildFile(foundSubreddit);
-            var file = "redditData.txt";
-            var filepath = path.resolve(".")+'/files/'+file;
-            fs.writeFile(filepath, filecontent, function(err) {
-                if(err) {
-                    return console.log(err);
-                }
-                res.download(filepath);
-                console.log(filepath + " downloaded");
-            }); 
+            writeFile2Download("Subreddit_" + foundSubreddit.title.split(" ")[0].replace("/r/","") + "_SubscriberData.csv",
+            buildFileCSV(mergeData(foundSubreddit)), 
+            res);
         }
     });
 });
 
-function buildFile(subreddit){
-    var startDate =  new Date(2017, 0, 1);
-    var endDate =  new Date();
-    var resultMatrix = [];
+router.get("/:id/download_json", function(req, res) {
+    Subreddit.findById(req.params.id, function(err, foundSubreddit){
+          if(err){
+            console.log(err);
+        } else {
+            writeFile2Download("Subreddit_" + foundSubreddit.title.split(" ")[0].replace("/r/","") + "_SubscriberData.json",
+            buildFileJSON(mergeData(foundSubreddit)), 
+            res);
+        }
+    });
+});
 
-   
+function writeFile2Download(filename,filetext,res){
+    var filepath = path.resolve(".")+'/files/'+filename;
+    console.log("Starting writing "+ filepath + "...");
+    fs.writeFile(filepath, filetext, function(err) {
+        if(err) {
+            console.log("error while writing: " + err);
+            return console.log(err);
+        }
+        console.log("Done File written: " + filepath);
+        res.download(filepath);
+        console.log(filepath + " downloaded");
+    });  
+}
+
+function buildFileCSV(resultMatrix){
     
-    for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-        var row = { date: Date,
-                totalSubscribers: String,
-                subscriberGrowth:  String,
-                rank: String };
-                
-        row.date = new Date(d);
-        row.totalSubscribers = "-";
-        row.subscriberGrowth = "-";
-        row.rank = "-";
-        
-        subreddit.totalSubscribers.map(obj => {
-            if (obj.date.getTime() === new Date(d).getTime()) {
-                row.totalSubscribers = obj.value;
-            }
-        });
-        subreddit.subscriberGrowth.map(obj => {
-            if (obj.date.getTime() === new Date(d).getTime()) {
-                row.subscriberGrowth = obj.value;
-            }
-        });
-        subreddit.rank.map(obj => {
-            if (obj.date.getTime() === new Date(d).getTime()) {
-                row.rank = obj.value;
-            }
-        });
-    
-        
-        resultMatrix.push(row);
-    }
     var filetext = "Date, TotalSubscribers, SubscriberGrowth, Rank\r\n";
         resultMatrix.forEach(function(row){
             filetext += moment(row.date).format('DD.MM.YYYY') + ", " + row.totalSubscribers + ", " + row.subscriberGrowth + ", " + row.rank + "\r\n";
         });
+    console.log("Done csv-File build!");    
+    return filetext;
+}
+
+function buildFileJSON(resultMatrix){
+    var filetext = JSON.stringify(resultMatrix);
+    console.log("Done json-File build!");
     return filetext;
 }
 
    
+function mergeData(subreddit){
+    var firstDate = new Date(subreddit.totalSubscribers[0].date);
+    var startDate =  firstDate;
+    var endDate = new Date(new Date().setDate(new Date().getDate()-1)); //Yesterday
+    var resultMatrix = [];
+   
+    //POINTER
+    var pTotalSubscriber = 0, pSubscriberGrowth= 0, pRank = 0;
+
+    for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+       //row init
+        var row = { date: Date, totalSubscribers: String, subscriberGrowth:  String, rank: String };
+        
+        row.date = new Date(d);
+        
+        var rTotalSubscriber = getNextMatch(d,pTotalSubscriber,subreddit.totalSubscribers, "TotalSubscribers");
+        row.totalSubscribers = rTotalSubscriber.rvalue;
+        pTotalSubscriber = rTotalSubscriber.pointer;
+
+        var rSubscriberGrowth = getNextMatch(d,pSubscriberGrowth,subreddit.subscriberGrowth, "SubscriberGrowth");
+        row.subscriberGrowth = rSubscriberGrowth.rvalue;
+        pSubscriberGrowth = rSubscriberGrowth.pointer;
+  
+        var rRank = getNextMatch(d,pRank,subreddit.rank, "Rank");
+        row.rank = rRank.rvalue;
+        pRank = rRank.pointer;
+     
+        resultMatrix.push(row);
+    }
+    console.log("Done" + subreddit.title + " merged!");
+    return resultMatrix;
+}
 
 
-
+function getNextMatch(currentDate, pointer, obj, objString){
+    var rvalue = "-";
+    for (var i = pointer; i < obj.length; i++) {
+        if (obj[i].date.getTime() > new Date(currentDate).getTime()) {
+            break; 
+        } else if (obj[i].date.getTime() === new Date(currentDate).getTime()) {
+            rvalue = obj[i].value;
+            if (i+1 < obj.length) {
+                while(obj[i+1].date.getTime() <= obj[i].date.getTime()){
+                    pointer++;
+                    i++;
+                }
+            }
+            pointer++;
+            break; 
+        } 
+    }
+    return {rvalue : rvalue,
+            pointer : pointer};
+}
 
 function parseHTML(subreddit,res){
     c.queue({
-        uri:subreddit.url.replace("reddit.com/","redditmetrics.com/"),
+        uri:subreddit.url.replace("reddit.com/",process.env.DATABASE),
         subreddit:subreddit,
         sres : res
     });

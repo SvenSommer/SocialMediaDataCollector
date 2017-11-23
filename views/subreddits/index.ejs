@@ -1,16 +1,46 @@
 <% include ../partials/header %>
 <h1>Welcome!</h1>
 <% subreddits.forEach(function(subreddit){ %>
-    <div class="ui text container segment">
+    <div class="ui text container inverted segment">
         <h2><%= subreddit.title%></h2>
         <a href="<%= subreddit.url%>"><%= subreddit.url%></a>
-        <p>Subscriber Growth Entries: <%=  Object.keys(subreddit.subscriberGrowth).length%></p>
-        <p>Total Subscriber Entries: <%=  Object.keys(subreddit.totalSubscribers).length%></p>
-        <p>Rank Entries: <%=  Object.keys(subreddit.rank).length%></p>
-        <p>created: <%=moment(subreddit.created).format('DD. MMM YYYY')%></p>
-
+        <table class="ui selectable inverted table">
+        <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Last entry value</th>
+              <th>Last entry date</th>
+              <th>No. of entries available</th>
+              <th class="right aligned">Recorded since</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total subscribers</td>
+              <td><%=subreddit.totalSubscribers[subreddit.totalSubscribers.length-1].value%></td>
+              <td><%=moment(subreddit.totalSubscribers[subreddit.totalSubscribers.length-1].date).format('DD. MMM YYYY')%></td>
+              <td><%=subreddit.totalSubscribers.length%></td>
+              <td class="right aligned"><%=moment(subreddit.totalSubscribers[0].date).format('DD. MMM YYYY')%></td>
+            </tr>
+            <tr>
+              <td>Subscriber growth</td>
+              <td><%=subreddit.subscriberGrowth[subreddit.subscriberGrowth.length-1].value%></td>
+              <td><%=moment(subreddit.subscriberGrowth[subreddit.subscriberGrowth.length-1].date).format('DD. MMM YYYY')%></td>
+              <td><%=subreddit.subscriberGrowth.length%></td>
+              <td class="right aligned"><%=moment(subreddit.subscriberGrowth[0].date).format('DD. MMM YYYY')%></td>
+            </tr>
+            <tr>
+              <td>Subreddit Rank</td>
+              <td><%=subreddit.rank[subreddit.rank.length-1].value%></td>
+              <td><%=moment(subreddit.rank[subreddit.rank.length-1].date).format('DD. MMM YYYY')%></td>
+              <td><%=subreddit.rank.length%></td>
+              <td class="right aligned"><%=moment(subreddit.rank[0].date).format('DD. MMM YYYY')%></td>
+            </tr>
+          </tbody>
+        </table>
         <a class="ui primary button" href="/subreddits/<%=subreddit._id%>/refresh">Update</a>
-        <a class="ui positive button" href="/subreddits/<%=subreddit._id%>/download">Download</a>
+        <a class="ui positive button" href="/subreddits/<%=subreddit._id%>/download_csv">Download csv</a>
+        <a class="ui positive button" href="/subreddits/<%=subreddit._id%>/download_json">Download json</a>
 
     </div>
 <% })%>
