@@ -24,12 +24,16 @@
   "homepage": "https://github.com/SvenSommer/RedditDataCollector#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "connect-flash": "^0.1.1",
     "crawler": "^1.1.1",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "helmet": "^3.9.0",
     "method-override": "^2.3.10",
     "moment": "^2.19.2",
-    "mongoose": "^4.13.4"
+    "mongoose": "^4.13.4",
+    "passport": "^0.4.0",
+    "xmlhttprequest": "^1.8.0"
   }
 }

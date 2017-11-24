@@ -1,0 +1,23 @@
+<% include ../partials/header %>
+<div class="ui main text container segment">
+    <div class="ui huge header">Add YouTube channel</div>
+    <form class="ui form" action="/youtubechannels" method="POST">
+        <div class="field">
+            <label for="url">Channel url</label>
+            <input class="form-control" type="text" name="youtubechannel[url]" placeholder="https://www.youtube.com/channel/UCO2x-p9gg9TLKneXlibGR7w">
+        </div>
+        <div class="field">
+            <label>HTML-Body</label>
+            <textarea name="youtubechannel[htmlbody]"></textarea>
+        </div>
+        <div class="form-group">
+           <button class="ui submit button">Submit</button>
+        </div>
+    </form>
+    <a href="/youtubechannels">back</a>
+</div>
+    
+
+
+
+<% include ../partials/footer %>

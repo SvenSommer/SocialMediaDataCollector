@@ -1,0 +1,66 @@
+<% include ../partials/header %>
+ <div class="ui main text container inverted segment">
+      <a class="ui primary button" href="/youtubechannels/new">Collect new YouTube channel data</a>
+    </div>
+<% youtubechannels.forEach(function(youtubechannel){ %>
+   
+    <div class="ui text container inverted segment">
+        <h2><%= youtubechannel.title%></h2>
+        <a href="<%= youtubechannel.url%>"><%= youtubechannel.url%></a>
+        <table class="ui selectable inverted table">
+        <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Last entry value</th>
+              <th>Last entry date</th>
+              <th>No. of entries available</th>
+              <th class="right aligned">Recorded since</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total subscribers</td>
+              <%if(youtubechannel.totalSubscribers.length>0){%>
+              <td><%=youtubechannel.totalSubscribers[youtubechannel.totalSubscribers.length-1].value%></td>
+              <td><%=moment(youtubechannel.totalSubscribers[youtubechannel.totalSubscribers.length-1].date).format('DD. MMM YYYY')%></td>
+              <td><%=youtubechannel.totalSubscribers.length%></td>
+              <td class="right aligned"><%=moment(youtubechannel.totalSubscribers[0].date).format('DD. MMM YYYY')%></td>
+              <%}%>
+            </tr>
+            <tr>
+              <td>Subscriber growth</td>
+              <%if(youtubechannel.totalSubscribers.length>0){%>
+              <td><%=youtubechannel.subscriberGrowth[youtubechannel.subscriberGrowth.length-1].value%></td>
+              <td><%=moment(youtubechannel.subscriberGrowth[youtubechannel.subscriberGrowth.length-1].date).format('DD. MMM YYYY')%></td>
+              <td><%=youtubechannel.subscriberGrowth.length%></td>
+              <td class="right aligned"><%=moment(youtubechannel.subscriberGrowth[0].date).format('DD. MMM YYYY')%></td>
+              <%}%>
+            </tr>
+            <tr>
+              <td>Total Views</td>
+              <%if(youtubechannel.totalSubscribers.length>0){%>
+              <td><%=youtubechannel.totalViews[youtubechannel.totalViews.length-1].value%></td>
+              <td><%=moment(youtubechannel.totalViews[youtubechannel.totalViews.length-1].date).format('DD. MMM YYYY')%></td>
+              <td><%=youtubechannel.totalViews.length%></td>
+              <td class="right aligned"><%=moment(youtubechannel.totalViews[0].date).format('DD. MMM YYYY')%></td>
+              <%}%>
+            </tr>
+            <tr>
+              <td>Daily Views</td>
+              <%if(youtubechannel.totalSubscribers.length>0){%>
+              <td><%=youtubechannel.dailyViews[youtubechannel.dailyViews.length-1].value%></td>
+              <td><%=moment(youtubechannel.dailyViews[youtubechannel.dailyViews.length-1].date).format('DD. MMM YYYY')%></td>
+              <td><%=youtubechannel.dailyViews.length%></td>
+              <td class="right aligned"><%=moment(youtubechannel.dailyViews[0].date).format('DD. MMM YYYY')%></td>
+              <%}%>
+            </tr>
+          </tbody>
+        </table>
+        <a class="ui primary button" href="/youtubechannels/<%=youtubechannel._id%>/refresh">Update</a>
+        <a class="ui positive button" href="/youtubechannels/<%=youtubechannel._id%>/download_csv">Download csv</a>
+        <a class="ui positive button" href="/youtubechannels/<%=youtubechannel._id%>/download_json">Download json</a>
+
+    </div>
+<% })%>
+
+<% include ../partials/footer %>

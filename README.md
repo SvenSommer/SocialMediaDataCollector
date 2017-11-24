@@ -1,16 +1,18 @@
-# Reddit Data Collector
-Website to aggregate historcial Data from reddit.com. Only specifiy the URL of the subreddit you are interrested.
+# SocialMediaDataCollector
+Website to aggregate historcial Data from reddit, Youtube, Instagram, Twitch and Twitter. Only specifiy the URL of the subreddit you are interrested.
 
-![Screenshot of Website](https://github.com/SvenSommer/RedditDataCollector/blob/master/img/example.png?raw=true)
-
-
-A Demo page is available [here](https://getsubredditstats.herokuapp.com/subreddits).
+![Screenshot of Website](https://github.com/SvenSommer/SocialMediaDataCollector/blob/master/img/example.png?raw=true)
 
 
-Following data is available:
-* subscriberGrowth (date: Date, subscribers: Number)
-* totalSubscribers (date: Date, subscribers: Number)
-* rank             (date: Date, rank: Number)
+A Demo page is available [here](https://socialmediadatacollector.herokuapp.com/).
+
+
+Following data is available (depends on medium):
+* subscriberGrowth (date: Date, value: Number)
+* totalSubscribers (date: Date, value: Number)
+* rank             (date: Date, value: Number)
+* totalViews       (date: Date, value: Number)
+* dailyViews       (date: Date, value: Number)
     
 Data is available as csv or JSON-file or viewable in raw format. 
 
