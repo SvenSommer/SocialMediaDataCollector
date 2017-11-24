@@ -4,7 +4,6 @@ var express             = require("express"),
     bodyParser          = require("body-parser"),
     mongoose            = require("mongoose"),
     flash               = require("connect-flash"),
-    passport            = require("passport"),
     moment              = require('moment'),
     helmet              = require('helmet');
 
@@ -32,9 +31,9 @@ if (!process.env.DOWNLOAD_ENABLED) {
 
 
 
-var indexRoutes          = require("./routes/index"),
- subredditRoutes      = require("./routes/subreddits"),
- youtubechannelRoutes = require("./routes/youtubechannels"),
+var indexRoutes           = require("./routes/index"),
+ subredditRoutes          = require("./routes/subreddits"),
+ youtubechannelRoutes     = require("./routes/youtubechannels"),
  twitchuserRoutes         = require("./routes/twitchusers"),
  twitteruserRoutes        = require("./routes/twitterusers"),
  instagramuserRoutes      = require("./routes/instagramusers");
@@ -52,8 +51,7 @@ app.locals.moment = moment;
 var url = process.env.DATABASEURL || "mongodb://localhost/socialmediadata";
 mongoose.connect(url, {useMongoClient: true});
  
-app.use(passport.initialize());
-app.use(passport.session()); 
+
  
 app.use(function(req, res, next){
    res.locals.error = req.flash("error");

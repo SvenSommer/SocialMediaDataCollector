@@ -3,7 +3,7 @@
       <a class="ui primary button" href="/youtubechannels/new">Collect new YouTube channel data</a>
     </div>
 <% youtubechannels.forEach(function(youtubechannel){ %>
-   
+    <%if(youtubechannel.totalSubscribers.length>0){%>
     <div class="ui text container inverted segment">
         <h2><%= youtubechannel.title%></h2>
         <a href="<%= youtubechannel.url%>"><%= youtubechannel.url%></a>
@@ -61,6 +61,7 @@
         <a class="ui positive button" href="/youtubechannels/<%=youtubechannel._id%>/download_json">Download json</a>
 
     </div>
+     <%}%>
 <% })%>
 
 <% include ../partials/footer %>
